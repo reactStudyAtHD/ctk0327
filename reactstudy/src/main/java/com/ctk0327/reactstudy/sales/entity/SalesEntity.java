@@ -1,14 +1,13 @@
 package com.ctk0327.reactstudy.sales.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "sales")
 public class SalesEntity {
-    @Id
-    @GeneratedValue
-    @Column(name = "SALE_ID")
-    private Integer saleId;
 
     @Column(name = "SALE_YEAR")
     private Integer saleYear;
@@ -28,17 +27,9 @@ public class SalesEntity {
     @Column(name = "SERVICE_SALES")
     private Integer serviceSales;
 
+    @Id
     @Column(name = "SALE_DATE")
-    private java.sql.Date saleDate;
-
-
-    public Integer getSaleId() {
-        return this.saleId;
-    }
-
-    public void setSaleId(Integer saleId) {
-        this.saleId = saleId;
-    }
+    private LocalDate saleDate;
 
     public Integer getSaleYear() {
         return this.saleYear;
@@ -88,11 +79,13 @@ public class SalesEntity {
         this.serviceSales = serviceSales;
     }
 
-    public java.sql.Date getSaleDate() {
+    public LocalDate getSaleDate() {
         return this.saleDate;
     }
 
-    public void setSaleDate(java.sql.Date saleDate) {
+    public void setSaleDate(LocalDate saleDate) {
+        setSaleMonth(saleDate.getMonthValue());
+        setSaleYear(saleDate.getYear());
         this.saleDate = saleDate;
     }
 }
