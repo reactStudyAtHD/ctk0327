@@ -1,6 +1,5 @@
 package com.ctk0327.reactstudy.sales.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +42,6 @@ public class SalesController {
         }
         return new ResponseEntity<>(salesEntities, HttpStatus.OK);
     }
-
-/*    @RequestMapping(value = "/sale", method = RequestMethod.GET)
-    public ResponseEntity<SalesEntity> getSale(
-            @RequestParam(value = "saleId", required = true) Integer saleId) {
-        final SalesEntity salesEntity = salesRepository.findById(saleId).isPresent() ? salesRepository.findById(
-                saleId).get() : null;
-        final HttpStatus httpStatus = salesEntity == null ? HttpStatus.NOT_FOUND : HttpStatus.OK;
-        return new ResponseEntity<>(salesEntity, httpStatus);
-    }*/
 
     @RequestMapping(value = "/sale", method = RequestMethod.POST)
     public ResponseEntity<SalesEntity> saveSale(@RequestBody SalesEntity salesEntity) {
