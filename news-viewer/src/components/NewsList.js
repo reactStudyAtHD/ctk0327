@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import NewsItem from './NewsItem';
 import axios from "axios";
+import usePromise from "../lib/usePromise";
 
 // const NewsListBlock
 
@@ -39,38 +40,51 @@ const sampleArticle = {
 };*/
 
 const NewsList = ({category}) => {
-    const [articles, setArticles] = useState(null);
-    const [loading, setLoading] = useState(false);
+    // const [articles, setArticles] = useState(null);
+    // const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const query=category==='all'?'' :`&category=${category}`;
-                const response = await axios.get(
-                    `https://newsapi.org/v2/top-headlines?country=kr${query}&apikey=c59c6db75bd0445fa9e37c984fa42902`
-                );
-                setArticles(response.data.articles);
-            } catch (e) {
-                console.log(e);
-            }
-            setLoading(false);
-        };
-        fetchData();
-    }, [category]);
+    /*
+        useEffect(() => {
+            const fetchData = async () => {
+                setLoading(true);
+                try {
+                    const query=category==='all'?'' :`&category=${category}`;
+                    const response = await axios.get(
+                        `https://newsapi.org/v2/top-headlines?country=kr${query}&apikey=c59c6db75bd0445fa9e37c984fa42902`
+                    );
+                    setArticles(response.data.articles);
+                } catch (e) {
+                    console.log(e);
+                }
+                setLoading(false);
+            };
+            fetchData();
+        }, [category]);
+    */
+    const [loading, response, error] = usePromise(() => {
+        const query = category === 'all' ? '' : `&category=${category}`;
+        return axios.get(
+            `https://newsapi.org/v2/top-headlines?country=kr${query}&apikey=c59c6db75bd0445fa9e37c984fa42902`
+        );
+    },[category]);
 
     if (loading) {
         return <NewsList>대기 중...</NewsList>;
     }
 
-    if (!articles) {
+    if (!response) {
         return null;
     }
+    if (error) {
+        return <NewsList>에러 발생!</NewsList>;
+    }
+
+    const {articles}=response.data;
 
     return (
         <NewsListBlock>
             {articles.map(article => (
-                <NewsItem key={article.url} article={article}/>
+                    <NewsItem key={article.url} article={article}/>
                 )
             )}
         </NewsListBlock>
