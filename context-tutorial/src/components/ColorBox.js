@@ -1,9 +1,9 @@
 import React from "react";
-import ColorContext from "../contexts/color";
+import ColorContext, {ColorConsumer} from "../contexts/color";
 
 const ColorBox=()=>{
     return(
-        <ColorContext.Consumer>
+        <ColorConsumer>
             {value=>(
                 <div
                     style={{
@@ -13,7 +13,7 @@ const ColorBox=()=>{
                     }}
                 />
             )}
-        </ColorContext.Consumer>
+        </ColorConsumer>
     );
 };
 
