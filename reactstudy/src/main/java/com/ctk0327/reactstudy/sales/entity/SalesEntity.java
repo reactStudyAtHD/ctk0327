@@ -9,6 +9,14 @@ import javax.persistence.*;
 @Table(name = "sales")
 public class SalesEntity {
 
+    @Id
+    @Column(name = "SALE_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer saleId;
+
+    @Column(name = "SALE_DATE")
+    private LocalDate saleDate;
+
     @Column(name = "SALE_YEAR")
     private Integer saleYear;
 
@@ -26,10 +34,6 @@ public class SalesEntity {
 
     @Column(name = "SERVICE_SALES")
     private Integer serviceSales;
-
-    @Id
-    @Column(name = "SALE_DATE")
-    private LocalDate saleDate;
 
     public Integer getSaleYear() {
         return this.saleYear;
@@ -87,5 +91,13 @@ public class SalesEntity {
         setSaleMonth(saleDate.getMonthValue());
         setSaleYear(saleDate.getYear());
         this.saleDate = saleDate;
+    }
+
+    public Integer getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(Integer saleId) {
+        this.saleId = saleId;
     }
 }

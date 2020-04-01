@@ -29,8 +29,12 @@ const TableContent = styled.div`
 `;
 
 const Main = () => {
+
     const [saleYear, setSaleYear] = useState(2020);
     const [saleMonth, setSaleMonth] = useState(4);
+    const [rowData, setRowData] = useState([]);
+    const [loading, setLoading] = useState(false);
+
     const onClick = useCallback(type => {
         if (type === '-') {
             if (saleMonth !== 1) {
@@ -50,12 +54,10 @@ const Main = () => {
         }
     }, [saleMonth, saleYear]);
 
-    const changColumn = (params) => {
-        console.log(params);
-    };
     const columnDefs = [
         {
             headerName: "Date", field: "date", valueSetter: (params) => {
+                console.log(params);
                 if(params.data.date!==params.newValue){
                     params.data.date=params.newValue;
                     return true;
@@ -97,9 +99,6 @@ const Main = () => {
         {headerName: "ToTal", field: "total"},
         {headerName: "Per", field: "per"},
     ];
-
-    const [rowData, setRowData] = useState([]);
-    const [loading, setLoading] = useState(false);
 
     const onGridReady = (params) => {
         console.log(saleMonth);
