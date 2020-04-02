@@ -31,6 +31,7 @@ const TableComponents = ({rowData, columnDefs, onGridReady}) => {
         return 30;
     };
 
+    const rowSelection= 'single';
     const defaultColDef = {
         flex: 1,
         editable: true,
@@ -68,6 +69,7 @@ const TableComponents = ({rowData, columnDefs, onGridReady}) => {
                 onGridReady={onGridReady}
                 getRowHeight={getRowHeight}
                 defaultColDef={defaultColDef}
+                rowSelection={rowSelection}
                 stopEditingWhenGridLosesFocus={true}
             >
             </AgGridReact>
