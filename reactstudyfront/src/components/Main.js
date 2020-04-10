@@ -40,6 +40,7 @@ const Main = () => {
     const [loading, setLoading] = useState(false);
     const [gridApi, setGridApi] = useState(null);
     const [gridColumnAPi, setGridColumnAPi] = useState(null);
+    const [deletedRow,setDeletedRow]=useState([]);
     //
     /*    let gridApi = null;
         let gridColumnApi = null;*/
@@ -127,6 +128,7 @@ const Main = () => {
         params.data.total = parseInt(params.data.card) + parseInt(params.data.cash) + parseInt(params.data.service);
         params.data.per = (parseInt(params.data.card) + parseInt(params.data.cash) + parseInt(params.data.service)) / params.data.table;
     };
+
     const columnDefs = [
         {
             headerName: "Date", field: "date", valueSetter: (params) => {
