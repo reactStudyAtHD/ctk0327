@@ -69,4 +69,15 @@ public class SalesController {
             return ResponseEntity.status(500).build();
         }
     }
+
+    @RequestMapping(value = "/sales", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteSales(@RequestBody List<SalesEntity> salesEntity) {
+        try {
+            salesRepository.deleteAll(salesEntity);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.getStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
 }
