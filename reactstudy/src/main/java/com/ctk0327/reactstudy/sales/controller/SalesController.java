@@ -19,7 +19,7 @@ import com.ctk0327.reactstudy.sales.repository.SalesRepository;
 import io.swagger.annotations.Api;
 
 @RestController
-@CrossOrigin(origins = { "*" })
+//@CrossOrigin(origins = { "*" })
 @Api(tags = { Swagger2Config.TAG_1 })
 public class SalesController {
     @Autowired
@@ -53,9 +53,17 @@ public class SalesController {
 
     @RequestMapping(value = "/sales", method = RequestMethod.POST)
     public ResponseEntity<List<SalesEntity>> saveSales(@RequestBody List<SalesEntity> salesEntities) {
-        final List<SalesEntity> savedSalesEntities = salesRepository.saveAll(salesEntities);
-        final HttpStatus httpStatus =
-                savedSalesEntities == null ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.CREATED;
+        List<SalesEntity> savedSalesEntities=null;
+        HttpStatus httpStatus=null;
+
+        try {
+            savedSalesEntities = salesRepository.saveAll(salesEntities);
+            httpStatus =
+                    savedSalesEntities == null ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.CREATED;
+
+        }catch (Exception e){
+            e.getStackTrace();
+        }
         return new ResponseEntity<>(savedSalesEntities, httpStatus);
     }
 
@@ -63,21 +71,19 @@ public class SalesController {
     public ResponseEntity<Void> deleteSale(@RequestBody SalesEntity salesEntity) {
         try {
             salesRepository.delete(salesEntity);
-            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.getStackTrace();
-            return ResponseEntity.status(500).build();
         }
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/sales", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteSales(@RequestBody List<SalesEntity> salesEntity) {
         try {
             salesRepository.deleteAll(salesEntity);
-            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.getStackTrace();
-            return ResponseEntity.status(500).build();
         }
+        return ResponseEntity.ok().build();
     }
 }
