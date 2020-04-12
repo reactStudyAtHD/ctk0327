@@ -31,38 +31,52 @@ public class SalesController {
             @RequestParam(value = "saleMonth", required = false)
                     Integer saleMonth) {
         List<SalesEntity> salesEntities = null;
-        if (saleMonth == null && saleYear == null) {
-            salesEntities = salesRepository.findAll();
-        } else if (saleYear == null) {
-            salesEntities = salesRepository.findBySaleMonth(saleMonth);
-        } else if (saleMonth == null) {
-            salesEntities = salesRepository.findBySaleYear(saleYear);
-        } else {
-            salesEntities = salesRepository.findBySaleYearAndSaleMonth(saleYear, saleMonth);
+        try {
+            if (saleMonth == null && saleYear == null) {
+                salesEntities = salesRepository.findAll();
+                throw new NullPointerException();
+            } else if (saleYear == null) {
+                salesEntities = salesRepository.findBySaleMonth(saleMonth);
+            } else if (saleMonth == null) {
+                salesEntities = salesRepository.findBySaleYear(saleYear);
+            } else {
+                salesEntities = salesRepository.findBySaleYearAndSaleMonth(saleYear, saleMonth);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
         }
+
         return new ResponseEntity<>(salesEntities, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/sale", method = RequestMethod.POST)
     public ResponseEntity<SalesEntity> saveSale(@RequestBody SalesEntity salesEntity) {
-        final SalesEntity savedSalesEntity = salesRepository.save(salesEntity);
-        final HttpStatus httpStatus =
-                savedSalesEntity == null ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.CREATED;
+        SalesEntity savedSalesEntity=null;
+        HttpStatus httpStatus=null;
+        try {
+            savedSalesEntity = salesRepository.save(salesEntity);
+            httpStatus =
+                    savedSalesEntity == null ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.CREATED;
+        }catch (Exception e){
+            e.getStackTrace();
+            throw e;
+        }
         return new ResponseEntity<>(savedSalesEntity, httpStatus);
     }
 
     @RequestMapping(value = "/sales", method = RequestMethod.POST)
     public ResponseEntity<List<SalesEntity>> saveSales(@RequestBody List<SalesEntity> salesEntities) {
-        List<SalesEntity> savedSalesEntities=null;
-        HttpStatus httpStatus=null;
+        List<SalesEntity> savedSalesEntities = null;
+        HttpStatus httpStatus = null;
 
         try {
             savedSalesEntities = salesRepository.saveAll(salesEntities);
-            httpStatus =
-                    savedSalesEntities == null ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.CREATED;
+            httpStatus = savedSalesEntities == null ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.CREATED;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getStackTrace();
+            throw e;
         }
         return new ResponseEntity<>(savedSalesEntities, httpStatus);
     }
@@ -73,6 +87,7 @@ public class SalesController {
             salesRepository.delete(salesEntity);
         } catch (Exception e) {
             e.getStackTrace();
+            throw e;
         }
         return ResponseEntity.ok().build();
     }
@@ -83,6 +98,7 @@ public class SalesController {
             salesRepository.deleteAll(salesEntity);
         } catch (Exception e) {
             e.getStackTrace();
+            throw e;
         }
         return ResponseEntity.ok().build();
     }
