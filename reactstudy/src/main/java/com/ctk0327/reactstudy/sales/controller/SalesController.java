@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,10 +81,10 @@ public class SalesController {
         return new ResponseEntity<>(savedSalesEntities, httpStatus);
     }
 
-    @RequestMapping(value = "/sale", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteSale(@RequestBody SalesEntity salesEntity) {
+    @RequestMapping(value = "/sale/{salesId}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteSale(@PathVariable Integer salesId) {
         try {
-            salesRepository.delete(salesEntity);
+            salesRepository.deleteById(salesId);
         } catch (Exception e) {
             e.getStackTrace();
             throw e;
