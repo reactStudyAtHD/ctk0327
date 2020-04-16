@@ -26,6 +26,8 @@ import {
     DebugInstructions,
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Main from './Component/Main';
+import Navigator from './Screens/Navigator';
 /*
 const App= () => {
     useEffect(() => {
@@ -85,11 +87,12 @@ export default class App extends React.Component {
         SplashScreen.hide();
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <>
-                <Text>안녕하세요</Text>
+                <StatusBar barStyle="dark-content" backgroundColor={'transparent'} translucent={true}/>
+                <Navigator/>
             </>
-        )
+        );
     }
 }
