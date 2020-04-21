@@ -34,7 +34,6 @@ public class SalesController {
         try {
             if (saleMonth == null && saleYear == null) {
                 salesEntities = salesRepository.findAll();
-                throw new NullPointerException();
             } else if (saleYear == null) {
                 salesEntities = salesRepository.findBySaleMonth(saleMonth);
             } else if (saleMonth == null) {
