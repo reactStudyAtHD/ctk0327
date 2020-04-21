@@ -1,10 +1,11 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState, forwardRef, useImperativeHandle, useRef} from "react";
 import styled from "styled-components";
 import {MdChevronLeft, MdChevronRight} from "react-icons/md";
 import TableComponents from "./TableComponents";
 import axios from "axios";
 import getTomorrow from "../util/getTomorrow";
 import {useAlert} from 'react-alert'
+import CommonEditor from "../util/CommonEditor";
 
 const MainBlock = styled.div`
     display: flex;
@@ -32,15 +33,22 @@ const TableContent = styled.div`
 
 
 const Main = () => {
+
     const alert = useAlert();
 
+    const [statistic, setStatistic] = useState({
+        avTable: 0,
+        avCard: 0,
+        avService: 0,
+        avCash: 0
+    });
     const [saleYear, setSaleYear] = useState(2020);
     const [saleMonth, setSaleMonth] = useState(4);
     const [rowData, setRowData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [gridApi, setGridApi] = useState(null);
     const [gridColumnAPi, setGridColumnAPi] = useState(null);
-    const [deletedRow,setDeletedRow]=useState([]);
+    const [deletedRow, setDeletedRow] = useState([]);
     //
     /*    let gridApi = null;
         let gridColumnApi = null;*/
@@ -124,7 +132,7 @@ const Main = () => {
         }
     }, [saleMonth, saleYear, gridApi, rowData]);
 
-    const calculateTotalAndPer=(params)=>{
+    const calculateTotalAndPer = (params) => {
         params.data.total = parseInt(params.data.card) + parseInt(params.data.cash) + parseInt(params.data.service);
         params.data.per = (parseInt(params.data.card) + parseInt(params.data.cash) + parseInt(params.data.service)) / params.data.table;
     };
@@ -145,14 +153,15 @@ const Main = () => {
             headerName: "Table", field: "table", valueSetter: (params) => {
                 if (params.data.table !== params.newValue) {
                     params.data.table = params.newValue;
-/*                    params.data.total = params.data.card + params.data.cash + params.data.service;
-                    params.data.per = (params.data.card + params.data.cash + params.data.service) / params.data.table;*/
+                    /*                    params.data.total = params.data.card + params.data.cash + params.data.service;
+                                        params.data.per = (params.data.card + params.data.cash + params.data.service) / params.data.table;*/
                     calculateTotalAndPer(params);
                     return true;
                 } else {
                     return false;
                 }
-            }
+            },
+            cellEditorFramework: CommonEditor,
         },
         {
             headerName: "Card", field: "card", valueSetter: (params) => {
@@ -187,8 +196,8 @@ const Main = () => {
                 }
             }
         },
-        {headerName: "ToTal", field: "total"},
-        {headerName: "Per", field: "per"},
+        {headerName: "ToTal", field: "total", editable: false},
+        {headerName: "Per", field: "per", editable: false},
     ];
 
     const onGridReady = (params) => {
@@ -229,6 +238,10 @@ const Main = () => {
         fetchData()
     }, [saleYear, saleMonth]);
 
+    useEffect(() => {
+        console.log("check")
+    }, [rowData]);
+
     return (
         <MainBlock>
             <TableHeader>
@@ -238,6 +251,7 @@ const Main = () => {
             </TableHeader>
             <TableContent>
                 {/*안녕*/}
+                <div>테이블 : {statistic.avTable}</div>
                 <button onClick={() => onClick('add')}>Add Rows</button>
                 <button onClick={() => onClick('remove')}>Remove Rows</button>
                 <TableComponents onGridReady={onGridReady} columnDefs={columnDefs} rowData={rowData}/>

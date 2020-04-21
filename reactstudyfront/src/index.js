@@ -1,25 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import {transitions, positions, types,Provider as AlertProvider} from 'react-alert'
+import {transitions, positions, types, Provider as AlertProvider} from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {BrowserRouter} from "react-router-dom";
 
 const options = {
     // you can also just use 'bottom center'
     position: positions.BOTTOM_CENTER,
     timeout: 5000,
     offset: '30px',
-    type:types.ERROR,
+    type: types.ERROR,
     // you can also just use 'scale'
     transition: transitions.SCALE
 };
 
 ReactDOM.render(
-    <AlertProvider template={AlertTemplate} {...options}>
-        <App/>
-    </AlertProvider>,
+    <BrowserRouter>
+        <AlertProvider template={AlertTemplate} {...options}>
+            <App/>
+        </AlertProvider>
+    </BrowserRouter>
+    ,
     document.getElementById('root')
 );
 
