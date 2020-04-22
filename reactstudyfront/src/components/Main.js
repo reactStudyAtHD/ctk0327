@@ -42,18 +42,15 @@ const Main = () => {
         avService: 0,
         avCash: 0
     });
+
     const [saleYear, setSaleYear] = useState(2020);
     const [saleMonth, setSaleMonth] = useState(4);
     const [rowData, setRowData] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [gridApi, setGridApi] = useState(null);
-    const [gridColumnAPi, setGridColumnAPi] = useState(null);
-    const [deletedRow, setDeletedRow] = useState([]);
-    //
-    /*    let gridApi = null;
-        let gridColumnApi = null;*/
+
 
     const onClick = useCallback(type => {
+
         if (type === '-') {
             if (saleMonth !== 1) {
                 setSaleMonth(saleMonth => saleMonth - 1);
@@ -62,6 +59,7 @@ const Main = () => {
                 setSaleYear(saleYear => saleYear - 1);
             }
         }
+
         if (type === '+') {
             if (saleMonth !== 12) {
                 setSaleMonth(saleMonth => saleMonth + 1);
@@ -70,6 +68,7 @@ const Main = () => {
                 setSaleYear(saleYear => saleYear + 1);
             }
         }
+
         if (type === 'add') {
             const selectedRows = gridApi.getSelectedNodes();
             if (!selectedRows || selectedRows.length === 0) {
@@ -96,6 +95,7 @@ const Main = () => {
             });
             setRowData(tempArray);
         }
+
         if (type === 'remove') {
             const selectedRows = gridApi.getSelectedNodes();
             if (!selectedRows || selectedRows.length === 0) {
@@ -106,6 +106,7 @@ const Main = () => {
             console.log(selectedRow);
             setRowData(rowData.filter(row => row.id !== selectedRow.data.id));
         }
+
         if (type === 'save') {
             const saveRowData = async () => {
                 try {
@@ -203,7 +204,6 @@ const Main = () => {
     const onGridReady = (params) => {
         console.log(saleMonth);
         setGridApi(params.api);
-        setGridColumnAPi(params.columnApi);
         /*        gridApi = params.api;
                 gridColumnApi = params.columnApi;*/
         if (gridApi !== null) {
@@ -233,7 +233,6 @@ const Main = () => {
             } catch (e) {
                 console.log(e);
             }
-            setLoading(false);
         };
         fetchData()
     }, [saleYear, saleMonth]);
